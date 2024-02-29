@@ -1,32 +1,51 @@
 package demo.architecture.adapter.service.impl;
 
 import demo.architecture.adapter.service.FooService;
-import demo.architecture.application.ResponseUtil;
-import demo.architecture.domain.platform.foo.add.AddFooUseCase;
-import demo.architecture.domain.platform.foo.add.AddFooUseCaseRequest;
-import demo.architecture.domain.platform.foo.add.AddFooUseCaseResponse;
+import demo.architecture.adapter.service.requestpayload.AddFooRequestPayload;
+import demo.architecture.adapter.service.requestpayload.UpdateFooRequestPayload;
+import demo.architecture.adapter.service.response.AddFooResponse;
+import demo.architecture.adapter.service.response.UpdateFooResponse;
+import demo.architecture.domain.foo.add.AddFooUseCase;
+import demo.architecture.domain.foo.add.AddFooUseCaseRequest;
+import demo.architecture.domain.foo.add.AddFooUseCaseResponse;
+import demo.architecture.domain.foo.update.UpdateFooUseCase;
+import demo.architecture.domain.foo.update.UpdateFooUseCaseRequest;
+import demo.architecture.domain.foo.update.UpdateFooUseCaseResponse;
 import demo.architecture.domain.platform.handlers.BaseHandler;
 import demo.architecture.domain.platform.usecases.UseCaseRequest;
 import demo.architecture.domain.platform.usecases.UseCaseResponse;
 import io.vertx.core.Future;
 import jakarta.inject.Inject;
 
-public class FooServiceImpl implements FooService {
-  public final BaseHandler baseHandler;
-
+public record FooServiceImpl(BaseHandler baseHandler) implements FooService {
   @Inject
-  public FooServiceImpl(BaseHandler baseHandler) {
+  public FooServiceImpl {
 
-    this.baseHandler = baseHandler;
   }
 
   @Override
-  public Future<UseCaseResponse> addFoo() {
-    return this.baseHandler.handle(new AddFooUseCaseRequest("10", "Suman"), this::executeFooAdapter);
-
+  public Future<AddFooResponse> addFoo(AddFooRequestPayload payload) {
+    Future<UseCaseResponse> useCaseResponseFuture = this.baseHandler.handle(new AddFooUseCaseRequest(payload.id(), payload.name()), this::executeAddFooHandler);
+    return useCaseResponseFuture.map(useCaseResponse -> {
+      AddFooUseCaseResponse addFooUseCaseResponse = (AddFooUseCaseResponse) useCaseResponse;
+      return new AddFooResponse(addFooUseCaseResponse.id());
+    });
   }
 
-  private UseCaseResponse executeFooAdapter(UseCaseRequest useCaseRequest) {
+  @Override
+  public Future<UpdateFooResponse> updateFoo(UpdateFooRequestPayload payload) {
+    Future<UseCaseResponse> useCaseResponseFuture = this.baseHandler.handle(new AddFooUseCaseRequest(payload.id(), payload.name()), this::executeUpdateFooHandler);
+    return useCaseResponseFuture.map(useCaseResponse -> {
+      UpdateFooUseCaseResponse updateFooResponse = (UpdateFooUseCaseResponse) useCaseResponse;
+      return new UpdateFooResponse(updateFooResponse.id());
+    });
+  }
+
+  private UseCaseResponse executeAddFooHandler(UseCaseRequest useCaseRequest) {
     return new AddFooUseCase().execute((AddFooUseCaseRequest) useCaseRequest);
+  }
+
+  private UseCaseResponse executeUpdateFooHandler(UseCaseRequest useCaseRequest) {
+    return new UpdateFooUseCase().execute((UpdateFooUseCaseRequest) useCaseRequest);
   }
 }

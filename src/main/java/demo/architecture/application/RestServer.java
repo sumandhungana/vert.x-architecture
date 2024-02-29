@@ -1,6 +1,7 @@
 package demo.architecture.application;
 
 import demo.architecture.application.handler.AddFooHandler;
+import demo.architecture.application.handler.UpdateFooHandler;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.http.HttpMethod;
@@ -49,6 +50,8 @@ public class RestServer extends AbstractVerticle {
     Router fooApi = Router.router(vertx);
     fooApi.get("/add")
       .handler(GuiceInjectorHolder.getInjector().getInstance(AddFooHandler.class));
+    fooApi.get("/updaye")
+      .handler(GuiceInjectorHolder.getInjector().getInstance(UpdateFooHandler.class));
     return fooApi;
   }
 

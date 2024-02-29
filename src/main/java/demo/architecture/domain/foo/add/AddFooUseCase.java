@@ -1,4 +1,4 @@
-package demo.architecture.domain.platform.foo.add;
+package demo.architecture.domain.foo.add;
 
 import demo.architecture.domain.platform.usecases.UseCase;
 import jakarta.inject.Singleton;
