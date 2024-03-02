@@ -5,22 +5,30 @@ import demo.architecture.adapter.service.requestpayload.AddFooRequestPayload;
 import demo.architecture.adapter.service.requestpayload.UpdateFooRequestPayload;
 import demo.architecture.adapter.service.response.AddFooResponse;
 import demo.architecture.adapter.service.response.UpdateFooResponse;
-import demo.architecture.domain.foo.add.AddFooUseCase;
-import demo.architecture.domain.foo.add.AddFooUseCaseRequest;
-import demo.architecture.domain.foo.add.AddFooUseCaseResponse;
-import demo.architecture.domain.foo.update.UpdateFooUseCase;
-import demo.architecture.domain.foo.update.UpdateFooUseCaseRequest;
-import demo.architecture.domain.foo.update.UpdateFooUseCaseResponse;
-import demo.architecture.domain.platform.handlers.BaseHandler;
-import demo.architecture.domain.platform.usecases.UseCaseRequest;
-import demo.architecture.domain.platform.usecases.UseCaseResponse;
+import demo.architecture.core.domain.foo.add.AddFooUseCase;
+import demo.architecture.core.domain.foo.add.AddFooUseCaseRequest;
+import demo.architecture.core.domain.foo.add.AddFooUseCaseResponse;
+import demo.architecture.core.domain.foo.update.UpdateFooUseCase;
+import demo.architecture.core.domain.foo.update.UpdateFooUseCaseRequest;
+import demo.architecture.core.domain.foo.update.UpdateFooUseCaseResponse;
+import demo.architecture.core.platform.handlers.BaseHandler;
+import demo.architecture.core.platform.usecases.UseCaseRequest;
+import demo.architecture.core.platform.usecases.UseCaseResponse;
 import io.vertx.core.Future;
 import jakarta.inject.Inject;
 
-public record FooServiceImpl(BaseHandler baseHandler) implements FooService {
-  @Inject
-  public FooServiceImpl {
+public class FooServiceImpl implements FooService {
+  private final BaseHandler baseHandler;
+  private final AddFooUseCase addFooUseCase;
+  private final UpdateFooUseCase updateFooUseCase;
 
+  @Inject
+  public FooServiceImpl(BaseHandler baseHandler,
+                        AddFooUseCase addFooUseCase,
+                        UpdateFooUseCase updateFooUseCase) {
+    this.baseHandler = baseHandler;
+    this.addFooUseCase = addFooUseCase;
+    this.updateFooUseCase = updateFooUseCase;
   }
 
   @Override
@@ -42,10 +50,10 @@ public record FooServiceImpl(BaseHandler baseHandler) implements FooService {
   }
 
   private UseCaseResponse executeAddFooUseCase(UseCaseRequest useCaseRequest) {
-    return new AddFooUseCase().execute((AddFooUseCaseRequest) useCaseRequest);
+    return this.addFooUseCase.execute((AddFooUseCaseRequest) useCaseRequest);
   }
 
   private UseCaseResponse executeUpdateFooUseCase(UseCaseRequest useCaseRequest) {
-    return new UpdateFooUseCase().execute((UpdateFooUseCaseRequest) useCaseRequest);
+    return this.updateFooUseCase.execute((UpdateFooUseCaseRequest) useCaseRequest);
   }
 }

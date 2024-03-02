@@ -1,6 +1,9 @@
-package demo.architecture.domain.foo.add;
+package demo.architecture.core.domain.foo.add;
 
-import demo.architecture.domain.platform.usecases.UseCase;
+import demo.architecture.core.platform.usecases.UseCase;
+import demo.architecture.core.ports.FooRepository;
+import demo.architecture.core.ports.entities.FooEntity;
+import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
 import java.util.ArrayList;
@@ -8,11 +11,27 @@ import java.util.List;
 
 @Singleton
 public class AddFooUseCase implements UseCase<AddFooUseCaseRequest, AddFooUseCaseResponse> {
+
+  private final FooRepository fooRepository;
+
+  @Inject
+  public AddFooUseCase(FooRepository fooRepository) {
+    this.fooRepository = fooRepository;
+  }
+
   @Override
   public AddFooUseCaseResponse execute(AddFooUseCaseRequest request) {
     this.validateRequest(request);
     var value = this.saveIntoArrayList(request);
+    this.fooRepository.save(toEntity(request));
     return new AddFooUseCaseResponse(value.getFirst());
+  }
+
+  private FooEntity toEntity(AddFooUseCaseRequest request) {
+    FooEntity fooEntity = new FooEntity();
+    fooEntity.setId(request.id());
+    fooEntity.setName(request.name());
+    return fooEntity;
   }
 
   private void validateRequest(AddFooUseCaseRequest request) {

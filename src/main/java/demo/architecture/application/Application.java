@@ -1,7 +1,7 @@
 package demo.architecture.application;
 
 import com.google.inject.Guice;
-import demo.architecture.adapter.service.AdapterModule;
+import demo.architecture.adapter.AdapterModule;
 import demo.architecture.adapter.service.ConfigRetrieverHelper;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;

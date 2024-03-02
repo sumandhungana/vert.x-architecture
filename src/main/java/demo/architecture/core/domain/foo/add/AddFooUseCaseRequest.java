@@ -1,6 +1,6 @@
-package demo.architecture.domain.foo.add;
+package demo.architecture.core.domain.foo.add;
 
-import demo.architecture.domain.platform.usecases.UseCaseRequest;
+import demo.architecture.core.platform.usecases.UseCaseRequest;
 
 public record AddFooUseCaseRequest(String id,
                                    String name) implements UseCaseRequest {

@@ -1,6 +1,6 @@
-package demo.architecture.domain.foo.update;
+package demo.architecture.core.domain.foo.update;
 
-import demo.architecture.domain.platform.usecases.UseCase;
+import demo.architecture.core.platform.usecases.UseCase;
 
 import java.util.ArrayList;
 import java.util.List;
