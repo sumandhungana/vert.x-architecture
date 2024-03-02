@@ -8,7 +8,7 @@ import jakarta.inject.Singleton;
 
 @Singleton
 public class BaseHandler extends Handler<UseCaseRequest, UseCaseResponse> {
-  public Future<UseCaseResponse> handle(UseCaseRequest request, UseCase<UseCaseRequest, UseCaseResponse> handler) {
-    return result(request, handler);
+  public Future<UseCaseResponse> handle(UseCaseRequest request, UseCase<UseCaseRequest, UseCaseResponse> useCase) {
+    return result(request, useCase);
   }
 }

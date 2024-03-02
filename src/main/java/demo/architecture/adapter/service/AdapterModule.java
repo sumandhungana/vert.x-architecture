@@ -1,4 +1,4 @@
-package demo.architecture;
+package demo.architecture.adapter.service;
 
 import com.google.inject.AbstractModule;
 import demo.architecture.adapter.service.FooService;

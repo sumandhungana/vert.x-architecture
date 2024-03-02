@@ -30,4 +30,20 @@ To run your application:
 * https://discord.gg/6ry7aqPWXy[Vert.x Discord]
 * https://gitter.im/eclipse-vertx/vertx-users[Vert.x Gitter]
 
+== Architecture
 
+*`Hexagonal Architecture`*
+
+== Main Class
+
+`Application.java`
+
+== Rest Api
+
+`RestServer.java`
+
+== Dependency Injection
+
+*`Google Guice`
+
+*`Adapter: `AdapterModule.java``*

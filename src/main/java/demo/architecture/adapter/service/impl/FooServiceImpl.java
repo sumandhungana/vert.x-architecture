@@ -25,7 +25,7 @@ public record FooServiceImpl(BaseHandler baseHandler) implements FooService {
 
   @Override
   public Future<AddFooResponse> addFoo(AddFooRequestPayload payload) {
-    Future<UseCaseResponse> useCaseResponseFuture = this.baseHandler.handle(new AddFooUseCaseRequest(payload.id(), payload.name()), this::executeAddFooHandler);
+    Future<UseCaseResponse> useCaseResponseFuture = this.baseHandler.handle(new AddFooUseCaseRequest(payload.id(), payload.name()), this::executeAddFooUseCase);
     return useCaseResponseFuture.map(useCaseResponse -> {
       AddFooUseCaseResponse addFooUseCaseResponse = (AddFooUseCaseResponse) useCaseResponse;
       return new AddFooResponse(addFooUseCaseResponse.id());
@@ -34,18 +34,18 @@ public record FooServiceImpl(BaseHandler baseHandler) implements FooService {
 
   @Override
   public Future<UpdateFooResponse> updateFoo(UpdateFooRequestPayload payload) {
-    Future<UseCaseResponse> useCaseResponseFuture = this.baseHandler.handle(new AddFooUseCaseRequest(payload.id(), payload.name()), this::executeUpdateFooHandler);
+    Future<UseCaseResponse> useCaseResponseFuture = this.baseHandler.handle(new AddFooUseCaseRequest(payload.id(), payload.name()), this::executeUpdateFooUseCase);
     return useCaseResponseFuture.map(useCaseResponse -> {
       UpdateFooUseCaseResponse updateFooResponse = (UpdateFooUseCaseResponse) useCaseResponse;
       return new UpdateFooResponse(updateFooResponse.id());
     });
   }
 
-  private UseCaseResponse executeAddFooHandler(UseCaseRequest useCaseRequest) {
+  private UseCaseResponse executeAddFooUseCase(UseCaseRequest useCaseRequest) {
     return new AddFooUseCase().execute((AddFooUseCaseRequest) useCaseRequest);
   }
 
-  private UseCaseResponse executeUpdateFooHandler(UseCaseRequest useCaseRequest) {
+  private UseCaseResponse executeUpdateFooUseCase(UseCaseRequest useCaseRequest) {
     return new UpdateFooUseCase().execute((UpdateFooUseCaseRequest) useCaseRequest);
   }
 }
